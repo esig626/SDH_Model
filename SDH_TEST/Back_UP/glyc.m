@@ -1,0 +1,13 @@
+function J = glyc(gGLYC,glc_c ,nad_c,adp_c,pyr_c,atp_c,nadh_c,p,h_c)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This equation will be "parameter" tunned with 13C-MFA using readings from
+% glucose and lactacte intake/output, respectively.
+% Glucose + 2 NAD + 2 ADP → 2 Pyr+ 2 ATP + 2 NADH + 2 * H+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+J = gGLYC * ( (glc_c ./(glc_c + p.Kglu ) ) ...
+    .* (nad_c./( nad_c + p.KRSp_PYR)).^2 .* (adp_c./(adp_c + 9)).^2 ...
+    - (pyr_c ./ ( p.Mcm_pyr + pyr_c ) ).^2 .* (atp_c ./(p.KPSp_GLU + atp_c)).^2 ...
+    .* (nadh_c./( nadh_c + p.KRSn_2GAP)).^2 ...
+    .* (h_c./(h_c + 0.001)).^2 );
+
+end
